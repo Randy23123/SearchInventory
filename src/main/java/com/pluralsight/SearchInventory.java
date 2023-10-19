@@ -1,16 +1,25 @@
 package com.pluralsight;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SearchInventory {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ArrayList<Product> inventory = getInventory();
-        inventory.add(new Product(1, "banana", .45));
-        inventory.add(new Product(2, "apple", .25));
-        inventory.add(new Product(3, "grapes", 3.25));
-        inventory.add(new Product(4, "jalapeno", .12));
-        inventory.add(new Product(5, "beans", 2.85));
+        FileReader fileReader = new FileReader("src/main/resources/inventory.csv");
+        BufferedReader buffReader = new BufferedReader(fileReader);
+        String input = "";
+        String productName;
+        int productID;
+        double productPrice;
+        while ((input = buffReader.readLine()) != null){
+            String[] temp = input.split("\\|");
+            productID = Integer.parseInt(temp[0]);
+            productName = temp[1];
+            productPrice = Double.parseDouble(temp[2]);
+            inventory.add(new Product(productID, productName, productPrice));
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("We carry: ");
 
